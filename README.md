@@ -1,12 +1,71 @@
-# React + Vite
+# DSA Visualizer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A **React-based Data Structures and Algorithms (DSA) Visualizer** that helps users understand sorting algorithms through animations. This project is interactive and visually represents how different sorting algorithms work step by step.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+-   📊 **Sorting Algorithms**: Bubble Sort, Selection Sort, Insertion Sort, Merge Sort, Quick Sort.
+-   🎨 **Dynamic Visualizations**: Step-by-step animations to show the sorting process.
+-   🎛 **User Control**: Adjust sorting speed and array size.
+-   🔄 **Random Array Generator**: Generate new arrays for sorting.
+-   📱 **Responsive UI**: Works across all screen sizes.
 
-## Expanding the ESLint configuration
+## 🖼 Demo
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+[Live Demo](https://algovisualizer-arbaz.netlify.app/)
+
+## Project Screenshots
+
+<div align="center">
+    <img src="./public/project_image1.png" alt="Project Screenshot" width="100%" />
+    <img src="./public/project_image2.png" alt="Project Screenshot" width="100%" />
+</div>
+
+## 🛠 Installation
+
+To set up the project locally, follow these steps:
+
+```bash
+# Clone the repository
+git clone https://github.com/ErArbazAnsari/AlgoVisualizer
+
+# Navigate to the project directory
+cd AlgoVisualizer
+
+# Install dependencies
+npm install
+
+# Start the development server
+npm run dev
+```
+
+## 📜 Available Sorting Algorithms
+
+-   🔵 **Bubble Sort**
+-   🟠 **Selection Sort**
+-   🟢 **Insertion Sort**
+-   🟡 **Merge Sort**
+-   🔴 **Quick Sort**
+
+## 🎨 How It Works
+
+1. **Select an Algorithm**: Choose from available sorting algorithms.
+2. **Adjust Speed**: Control the visualization speed.
+3. **Generate New Array**: Create a randomized dataset.
+4. **Start Sorting**: Watch the algorithm in action!
+
+## 🛡 Tech Stack
+
+-   ⚛ **React.js** – Frontend library
+-   🎨 **CSS/Tailwind** – Styling
+-   🏗 **JavaScript (ES6+)** – Logic & functionality
+
+## 👨‍💻 Contributions
+
+Contributions are welcome! Feel free to fork, create issues, and submit pull requests.
+
+---
+
+Made with ❤️ by [Arbaz Ansari](https://github.com/erarbazansari)
+
+---

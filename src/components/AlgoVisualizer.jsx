@@ -26,7 +26,7 @@ const AlgoVisualizer = () => {
         setData(initialData);
     }
 
-    /* ---------------------------------main algos and logic for sound--------------------------------- */
+    /* main algos and logic for sound */
     let audioCtx = null;
     let gainNode = null; // For volume control
 
@@ -59,7 +59,6 @@ const AlgoVisualizer = () => {
     };
 
     // main sorting function and sound effect logic
-
     const handleSort = () => {
         if (sortingAlgo === "bubble") {
             (async () => {

@@ -96,7 +96,8 @@ const AlgoVisualizer = () => {
         },
     ];
     const [currentIndices, setCurrentIndices] = useState([]);
-    const [arraySize, setArraySize] = useState(50);
+    const [arraySize, setArraySize] = useState(40);
+    const [audio, setAudio] = useState(0.2);
 
     // random value generator
     function valueGenerator(min, max) {
@@ -111,7 +112,38 @@ const AlgoVisualizer = () => {
         setData(initialData);
     }
 
-    // Function to handle sorting
+    /* ---------------------------------main algos and logic for sound--------------------------------- */
+    let audioCtx = null;
+    let gainNode = null; // For volume control
+
+    // Frequencies for a pentatonic scale (sweet and pleasant to the ear)
+    const frequencies = {
+        comparison: 440, // (default for comparison)
+        swap: 523.25, // (default for swap)
+    };
+
+    // Default volume (0 to 1)
+    let volume = audio;
+
+    const playNote = (freq) => {
+        if (audioCtx == null) {
+            audioCtx = new (AudioContext || window.webkitAudioContext)();
+            gainNode = audioCtx.createGain(); // Create a gain node for volume control
+            gainNode.connect(audioCtx.destination); // Connect gain node to audio context
+        }
+
+        const dur = 0.1; // Duration of the note
+        const osc = audioCtx.createOscillator();
+        osc.frequency.value = freq; // Set the frequency of the note
+
+        // Set the volume using the gain node
+        gainNode.gain.value = volume;
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + dur);
+        osc.connect(gainNode); // Connect oscillator to gain node
+    };
+
     const handleSort = () => {
         if (sortingAlgo === "bubble") {
             (async () => {
@@ -122,10 +154,14 @@ const AlgoVisualizer = () => {
                     for (let j = 0; j < data.length - i - 1; j++) {
                         setCurrentIndices([j, j + 1]); // Highlight current and comparing element
 
+                        playNote(frequencies.comparison); // Play comparison sound
+
                         if (data[j] > data[j + 1]) {
                             [data[j], data[j + 1]] = [data[j + 1], data[j]];
                             setData([...data]);
                             swapped = true; // Mark that a swap happened
+
+                            playNote(frequencies.swap); // Play swap sound
                         }
 
                         await new Promise((resolve) =>
@@ -145,6 +181,8 @@ const AlgoVisualizer = () => {
                     for (let j = i + 1; j < data.length; j++) {
                         setCurrentIndices([minIndex, j]); // Highlight current min and comparing element
 
+                        playNote(frequencies.comparison); // Play comparison sound
+
                         if (data[j] < data[minIndex]) {
                             minIndex = j;
                         }
@@ -158,6 +196,8 @@ const AlgoVisualizer = () => {
                         // Swap only if needed
                         [data[i], data[minIndex]] = [data[minIndex], data[i]];
                         setData([...data]);
+
+                        playNote(frequencies.swap); // Play swap sound
                     }
 
                     setCurrentIndices([]); // Unselect after swapping
@@ -174,12 +214,16 @@ const AlgoVisualizer = () => {
                     while (j >= 0 && data[j] > key) {
                         setCurrentIndices([j, j + 1]); // Highlight current and comparing elements
 
+                        playNote(frequencies.comparison); // Play comparison sound
+
                         await new Promise((resolve) =>
                             setTimeout(resolve, 500 / speedValue)
                         );
 
                         data[j + 1] = data[j]; // Shift element
                         setData([...data]);
+
+                        playNote(frequencies.swap); // Play swap sound
 
                         j--;
                     }
@@ -210,6 +254,9 @@ const AlgoVisualizer = () => {
 
                     while (i < leftArray.length && j < rightArray.length) {
                         setCurrentIndices([k, mid + j + 1]); // Highlight merging elements
+
+                        playNote(frequencies.comparison); // Play comparison sound
+
                         if (leftArray[i] <= rightArray[j]) {
                             array[k] = leftArray[i];
                             i++;
@@ -269,12 +316,17 @@ const AlgoVisualizer = () => {
                     for (let j = low; j < high; j++) {
                         setCurrentIndices([j, high]); // Highlight current and pivot element
 
+                        playNote(frequencies.comparison); // Play comparison sound
+
                         if (array[j] < pivot) {
                             i++;
                             if (i !== j) {
                                 // Swap only if needed
                                 [array[i], array[j]] = [array[j], array[i]];
                                 setData([...array]);
+
+                                playNote(frequencies.swap); // Play swap sound
+
                                 await new Promise((resolve) =>
                                     setTimeout(resolve, 500 / speedValue)
                                 );
@@ -289,6 +341,9 @@ const AlgoVisualizer = () => {
                             array[i + 1],
                         ];
                         setData([...array]);
+
+                        playNote(frequencies.swap); // Play swap sound
+
                         await new Promise((resolve) =>
                             setTimeout(resolve, 500 / speedValue)
                         );
@@ -302,6 +357,7 @@ const AlgoVisualizer = () => {
             })();
         }
     };
+    /* -------------------------------------section end------------------------------------- */
 
     // getting random value on load
     useEffect(() => {
@@ -543,6 +599,15 @@ const AlgoVisualizer = () => {
                         >
                             Start Sorting
                         </button>
+                        {/* <input
+                            type="range"
+                            min="0"
+                            max=".3"
+                            step="0.01"
+                            value={audio}
+                            onChange={(e) => setAudio(e.target.value)}
+                            className="w-1/2"
+                        /> */}
                     </div>
                 </div>
             </div>

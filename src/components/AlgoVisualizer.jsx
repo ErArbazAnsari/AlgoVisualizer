@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TfiReload } from "react-icons/tfi";
 import { algoDetails } from "../algoDetails/algos";
+import { HiSpeakerWave, HiSpeakerXMark } from "react-icons/hi2";
 
 const AlgoVisualizer = () => {
     const [data, setData] = useState([]);
@@ -8,6 +9,7 @@ const AlgoVisualizer = () => {
     const [speedValue, setSpeedValue] = useState(7.5);
     const [currentIndices, setCurrentIndices] = useState([]);
     const [arraySize, setArraySize] = useState(40);
+    const [mute, setMute] = useState(false);
     const [audio, setAudio] = useState(0.2);
     const [working, setWorking] = useState(false);
 
@@ -505,27 +507,38 @@ const AlgoVisualizer = () => {
                         })}
                     </div>
                     <div className="controls bg-[#3c3c3b] p-4 rounded-lg text-white flex justify-center shadow-md gap-4">
-                        {working ? (
-                            <button
-                                className="bg-red-500 p-2 rounded-md hover:bg-red-600 transition-all duration-200 cursor-pointer active:bg-red-500 text-black"
-                                onClick={() => {
-                                    window.location.reload();
-                                }}
-                            >
-                                <TfiReload className="text-white font-bold text-xl" />
-                            </button>
-                        ) : (
-                            <button
-                                className="bg-white p-2 rounded-md hover:bg-gray-300 transition-all duration-200 cursor-pointer active:bg-white text-black"
-                                onClick={async () => {
-                                    setWorking(true);
-                                    await handleSort(); // Ensure sorting completes
-                                    setWorking(false);
-                                }}
-                            >
-                                Start Sorting
-                            </button>
-                        )}
+                        <span>
+                            {working ? (
+                                <button
+                                    className="bg-red-500 p-2 rounded-md hover:bg-red-600 transition-all duration-200 cursor-pointer active:bg-red-500 text-black"
+                                    onClick={() => {
+                                        window.location.reload();
+                                    }}
+                                >
+                                    <TfiReload className="text-white font-bold text-xl" />
+                                </button>
+                            ) : (
+                                <button
+                                    className="bg-white p-2 rounded-md hover:bg-blue-200 transition-all duration-200 cursor-pointer active:bg-white text-black select-none"
+                                    onClick={async () => {
+                                        setWorking(true);
+                                        await handleSort(); // Ensure sorting completes
+                                        setWorking(false);
+                                    }}
+                                >
+                                    Start Sorting
+                                </button>
+                            )}
+                        </span>
+                        <span
+                            className="bg-white p-2 rounded-md hover:bg-blue-200 transition-all duration-200 cursor-pointer active:bg-white text-black flex items-center text-2xl"
+                            onClick={() => {
+                                setMute((prev) => !prev);
+                                setAudio((prev) => (prev === 0 ? 0.2 : 0));
+                            }}
+                        >
+                            {mute ? <HiSpeakerXMark /> : <HiSpeakerWave />}
+                        </span>
                     </div>
                 </div>
             </div>

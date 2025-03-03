@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 const AlgoVisualizer = () => {
     const [data, setData] = useState([]);
     const [sortingAlgo, setSortingAlgo] = useState("selection");
-    const [speedValue, setSpeedValue] = useState(5);
+    const [speedValue, setSpeedValue] = useState(7.5);
     const algoDetails = [
         {
             id: 1,

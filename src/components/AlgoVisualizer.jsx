@@ -1,103 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { TfiReload } from "react-icons/tfi";
+import { algoDetails } from "../algoDetails/algos";
 
 const AlgoVisualizer = () => {
     const [data, setData] = useState([]);
     const [sortingAlgo, setSortingAlgo] = useState("selection");
     const [speedValue, setSpeedValue] = useState(7.5);
-    const algoDetails = [
-        {
-            id: 1,
-            algo: "bubble",
-            best_TC: "O(n)",
-            average_TC: "O(n^2)",
-            worst_TC: "O(n^2)",
-            best_SC: "O(1)",
-            average_SC: "O(1)",
-            worst_SC: "O(1)",
-            description:
-                "Bubble Sort repeatedly compares and swaps adjacent elements if they are in the wrong order. This continues until the list is sorted. It's simple but inefficient for large datasets due to its slow performance.",
-            sudo_code: `1. Start from the first element.
-2. Compare the current element with the next.
-3. Swap if the current element is greater.
-4. Move to the next element.
-5. Repeat until the end of the list.
-6. Repeat the process for all elements.`,
-            reference: "https://www.youtube.com/watch?v=V3vM_m2iFtk",
-        },
-        {
-            id: 2,
-            algo: "selection",
-            best_TC: "O(n^2)",
-            average_TC: "O(n^2)",
-            worst_TC: "O(n^2)",
-            best_SC: "O(1)",
-            average_SC: "O(1)",
-            worst_SC: "O(1)",
-            description:
-                "Selection Sort is a simple sorting algorithm that repeatedly finds the smallest element from the unsorted part of the list and swaps it with the first unsorted element. This process continues until the entire list is sorted. It is easy to understand and implement but is inefficient for large datasets due to its repetitive scanning of the list. It works well for small lists or when memory usage is a concern.",
-            sudo_code: `1. Find the smallest element in the unsorted part.
-2. Swap it with the first unsorted element.
-3. Move the boundary of the sorted part one element to the right.
-4. Repeat until the entire list is sorted.`,
-            reference: "https://www.youtube.com/watch?v=9_B6TmAHveU",
-        },
-        {
-            id: 3,
-            algo: "insertion",
-            best_TC: "O(n)",
-            average_TC: "O(n^2)",
-            worst_TC: "O(n^2)",
-            best_SC: "O(1)",
-            average_SC: "O(1)",
-            worst_SC: "O(1)",
-            description:
-                "Insertion Sort arranges a list by taking one item at a time and placing it in the correct position. It compares each new item with the sorted part and inserts it where it belongs. This method works well for small lists or when the data is almost sorted but is slow for large datasets.",
-            sudo_code: `1. Start with the second element.
-2. Compare it with elements in the sorted part.
-3. Insert it into the correct position.
-4. Move to the next element.
-5. Repeat until the entire list is sorted.`,
-            reference: "https://www.youtube.com/watch?v=YpZUgiT1N94",
-        },
-        {
-            id: 4,
-            algo: "merge",
-            best_TC: "O(n log n)",
-            average_TC: "O(n log n)",
-            worst_TC: "O(n log n)",
-            best_SC: "O(n)",
-            average_SC: "O(n)",
-            worst_SC: "O(n)",
-            description:
-                "Merge Sort works by repeatedly splitting a list into smaller halves until each half has only one element. Then, it merges these sorted halves back together in order. This 'divide and conquer' method makes it very efficient for large datasets. It is also stable, meaning it keeps the order of equal elements, making it a reliable choice for sorting when consistency matters.",
-            sudo_code: `1. Divide the array into two halves.
-2. Recursively sort each half.
-3. Merge the sorted halves back together.
-4. Repeat until the entire array is sorted.`,
-            reference: "https://www.youtube.com/watch?v=86HOPLCgc00",
-        },
-        {
-            id: 5,
-            algo: "quick",
-            best_TC: "O(n log n)",
-            average_TC: "O(n log n)",
-            worst_TC: "O(n^2)",
-            best_SC: "O(log n)",
-            average_SC: "O(log n)",
-            worst_SC: "O(n)",
-            description:
-                "Quick Sort picks a pivot element and splits the list into two parts—smaller values on one side and larger ones on the other. It keeps repeating this process on each part until everything is sorted. It is very fast for large lists but can slow down if the pivot is not chosen well.",
-            sudo_code: `1. Choose a pivot element.
-2. Partition the array around the pivot.
-3. Recursively sort the sub-arrays.
-4. Combine the sorted sub-arrays.
-5. Repeat until the entire array is sorted.`,
-            reference: "https://www.youtube.com/watch?v=iVj8uyd50f4",
-        },
-    ];
     const [currentIndices, setCurrentIndices] = useState([]);
     const [arraySize, setArraySize] = useState(40);
     const [audio, setAudio] = useState(0.2);
+    const [working, setWorking] = useState(false);
 
     // random value generator
     function valueGenerator(min, max) {
@@ -143,6 +55,8 @@ const AlgoVisualizer = () => {
         osc.stop(audioCtx.currentTime + dur);
         osc.connect(gainNode); // Connect oscillator to gain node
     };
+
+    // main sorting function and sound effect logic
 
     const handleSort = () => {
         if (sortingAlgo === "bubble") {
@@ -568,7 +482,7 @@ const AlgoVisualizer = () => {
 
                 {/* Graph Section */}
                 <div className="graph w-full flex gap-4 p-4 bg-gray-500 rounded-xl flex-col flex-1 shadow-lg lg:max-w-[50%]">
-                    <div className="graph bg-[#3c3c3b] p-4 rounded-lg text-white flex flex-1 shadow-md">
+                    <div className="graph bg-[#3c3c3b] p-4 rounded-lg text-white flex flex-1 shadow-md sm:min-h-96">
                         {data.map((value, index) => {
                             const maxValue = Math.max(...data);
                             const heightPercentage = (value / maxValue) * 100;
@@ -591,23 +505,27 @@ const AlgoVisualizer = () => {
                         })}
                     </div>
                     <div className="controls bg-[#3c3c3b] p-4 rounded-lg text-white flex justify-center shadow-md gap-4">
-                        <button
-                            className="bg-blue-600 p-2 rounded-md hover:bg-blue-700 transition-all duration-200 cursor-pointer active:bg-blue-600"
-                            onClick={() => {
-                                handleSort();
-                            }}
-                        >
-                            Start Sorting
-                        </button>
-                        {/* <input
-                            type="range"
-                            min="0"
-                            max=".3"
-                            step="0.01"
-                            value={audio}
-                            onChange={(e) => setAudio(e.target.value)}
-                            className="w-1/2"
-                        /> */}
+                        {working ? (
+                            <button
+                                className="bg-red-500 p-2 rounded-md hover:bg-red-600 transition-all duration-200 cursor-pointer active:bg-red-500 text-black"
+                                onClick={() => {
+                                    window.location.reload();
+                                }}
+                            >
+                                <TfiReload className="text-white font-bold text-xl" />
+                            </button>
+                        ) : (
+                            <button
+                                className="bg-white p-2 rounded-md hover:bg-gray-300 transition-all duration-200 cursor-pointer active:bg-white text-black"
+                                onClick={async () => {
+                                    setWorking(true);
+                                    await handleSort(); // Ensure sorting completes
+                                    setWorking(false);
+                                }}
+                            >
+                                Start Sorting
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>

@@ -3,7 +3,7 @@ import AlgoVisualizer from "./components/AlgoVisualizer";
 
 function App() {
     return (
-        <div className="m-2">
+        <div>
             <AlgoVisualizer />
         </div>
     );

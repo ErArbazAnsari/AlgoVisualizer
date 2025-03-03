@@ -34,7 +34,7 @@ const AlgoVisualizer = () => {
             average_SC: "O(1)",
             worst_SC: "O(1)",
             description:
-                "Selection Sort works by scanning the unsorted part of a list, finding the smallest item, and swapping it with the first unsorted element. This process continues until the entire list is sorted. It performs better than Bubble Sort but is still inefficient for large datasets since it repeatedly scans the list, making the sorting process slow compared to more advanced algorithms like Quick Sort or Merge Sort.",
+                "Selection Sort is a simple sorting algorithm that repeatedly finds the smallest element from the unsorted part of the list and swaps it with the first unsorted element. This process continues until the entire list is sorted. It is easy to understand and implement but is inefficient for large datasets due to its repetitive scanning of the list. It works well for small lists or when memory usage is a concern.",
             sudo_code: `1. Find the smallest element in the unsorted part.
 2. Swap it with the first unsorted element.
 3. Move the boundary of the sorted part one element to the right.
@@ -96,6 +96,7 @@ const AlgoVisualizer = () => {
         },
     ];
     const [currentIndices, setCurrentIndices] = useState([]);
+    const [arraySize, setArraySize] = useState(50);
 
     // random value generator
     function valueGenerator(min, max) {
@@ -104,7 +105,7 @@ const AlgoVisualizer = () => {
     // getValue - random
     function getValues() {
         const initialData = [];
-        for (let i = 0; i < 33; i++) {
+        for (let i = 0; i < arraySize; i++) {
             initialData.push(valueGenerator(10, 100));
         }
         setData(initialData);
@@ -308,18 +309,19 @@ const AlgoVisualizer = () => {
     }, []);
 
     return (
-        <div className="flex flex-col gap-2 flex-1 p-2 bg-[#2b2b2a]">
-            <div className="choose-alg flex justify-center">
-                <div className="flex gap-2 p-2 bg-gray-400 rounded-xl shadow-lg">
+        <div className="flex flex-col gap-4 p-4 bg-[#2b2b2a] min-h-screen">
+            {/* Select any algo */}
+            <div className="choose-alg flex justify-center mb-4">
+                <div className="flex flex-wrap gap-2 p-3 bg-gray-500 rounded-xl shadow-lg">
                     {["selection", "bubble", "insertion", "merge", "quick"].map(
                         (algo) => (
                             <button
                                 key={algo}
                                 className={`p-2 px-4 rounded-lg text-white ${
                                     sortingAlgo === algo
-                                        ? "bg-blue-500"
+                                        ? "bg-blue-600"
                                         : "bg-[#3c3c3a]"
-                                } cursor-pointer transition-all duration-100`}
+                                } cursor-pointer transition-all duration-200 sm:text-sm md:text-base`}
                                 onClick={() => setSortingAlgo(algo)}
                             >
                                 {algo.charAt(0).toUpperCase() + algo.slice(1)}{" "}
@@ -329,18 +331,50 @@ const AlgoVisualizer = () => {
                     )}
                 </div>
             </div>
-            <div className="visualization flex flex-col lg:flex-row justify-center w-full gap-2">
-                <div className="details w-full flex gap-2 p-2 bg-gray-400 rounded-xl flex-col shadow-lg lg:max-w-1/2">
-                    <div className="inputs bg-[#3c3c3b] p-2 rounded-lg text-white flex gap-4 flex-col shadow-md">
-                        <p className="flex gap-5 items-center">
+
+            {/* Visualization Section */}
+            <div className="visualization flex flex-col lg:flex-row justify-center w-full gap-4 ">
+                {/* Details Section */}
+                <div className="details w-full flex gap-4 p-4 bg-gray-500 rounded-xl flex-col shadow-lg lg:max-w-[50%]">
+                    <div className="inputs bg-[#3c3c3b] p-4 rounded-lg text-white flex flex-col gap-4 shadow-md">
+                        <p className="flex flex-col sm:flex-row gap-5 items-center">
                             <span className="text-xl font-bold">
                                 Algorithm:{" "}
                             </span>
-                            <span className="bg-blue-500 text-white p-2 rounded-md">
+                            <span className="bg-blue-600 text-white p-2 rounded-md">
                                 {sortingAlgo.toUpperCase()} SORT
                             </span>
                         </p>
-                        <p className="flex gap-4 items-center">
+                        <p className="flex flex-col sm:flex-row gap-4 items-center">
+                            <label
+                                htmlFor="generate"
+                                className="text-xl font-bold"
+                            >
+                                New Array:
+                            </label>
+                            <span className="flex gap-2 items-center">
+                                <input
+                                    value={arraySize}
+                                    onChange={(e) => {
+                                        setArraySize(e.target.value);
+                                        // getValues();
+                                    }}
+                                    type="number"
+                                    name="arraySize"
+                                    id="arraySize"
+                                    className="w-16 bg-white p-2 rounded-md text-black"
+                                />
+                                <button
+                                    className="bg-blue-600 p-2 rounded-md hover:bg-blue-700 transition-all duration-200 cursor-pointer active:bg-blue-600"
+                                    onClick={() => {
+                                        getValues();
+                                    }}
+                                >
+                                    Generate
+                                </button>
+                            </span>
+                        </p>
+                        <p className="flex flex-col sm:flex-row gap-4 items-center">
                             <label htmlFor="data" className="text-xl font-bold">
                                 Input data:
                             </label>
@@ -349,16 +383,18 @@ const AlgoVisualizer = () => {
                                 name="data"
                                 id="data"
                                 value={data}
-                                className="bg-blue-500 text-white p-2 rounded-md flex-1"
+                                className="bg-white text-black p-2 rounded-md flex-1"
                                 onChange={(e) => {
                                     const newData = e.target.value
                                         .split(",")
                                         .map(Number);
                                     setData(newData);
+                                    setArraySize(newData.length);
                                 }}
                             />
                         </p>
-                        <p className="flex gap-4 items-center">
+
+                        <p className="flex flex-col sm:flex-row gap-4 items-center">
                             <label
                                 htmlFor="speed"
                                 className="text-xl font-bold"
@@ -372,28 +408,29 @@ const AlgoVisualizer = () => {
                                 id="speed"
                                 min={1}
                                 max={10}
+                                className="flex-1"
                                 onChange={(e) => setSpeedValue(e.target.value)}
                             />
                         </p>
                     </div>
-                    <div className="algo-details bg-[#3c3c3b] p-2 rounded-lg text-white flex flex-col shadow-md">
+                    <div className="algo-details bg-[#3c3c3b] p-4 rounded-lg text-white flex flex-col shadow-md">
                         {algoDetails.map((currentAlgo) => {
                             if (currentAlgo.algo === sortingAlgo) {
                                 return (
                                     <div key={currentAlgo.id}>
-                                        <h3 className="text-xl font-bold">
+                                        <h3 className="text-xl font-bold mb-2">
                                             {currentAlgo.algo
                                                 .charAt(0)
                                                 .toUpperCase() +
                                                 currentAlgo.algo.slice(1)}{" "}
                                             Sort
                                         </h3>
-                                        <p className="mt-2">
+                                        <p className="mb-4">
                                             {currentAlgo.description}
                                         </p>
-                                        <div className="mt-4 flex gap-3 justify-center">
-                                            <div className="bg-[#282828] p-2 rounded-lg">
-                                                <h2 className="text-lg font-semibold">
+                                        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
+                                            <div className="bg-[#282828] p-4 rounded-lg">
+                                                <h2 className="text-lg font-semibold mb-2">
                                                     Time Complexity:
                                                 </h2>
                                                 <p>
@@ -408,8 +445,8 @@ const AlgoVisualizer = () => {
                                                     {currentAlgo.worst_TC}
                                                 </p>
                                             </div>
-                                            <div className=" bg-[#282828] p-2 rounded-lg">
-                                                <h2 className="text-lg font-semibold">
+                                            <div className="bg-[#282828] p-4 rounded-lg">
+                                                <h2 className="text-lg font-semibold mb-2">
                                                     Space Complexity:
                                                 </h2>
                                                 <p>
@@ -430,43 +467,52 @@ const AlgoVisualizer = () => {
                             }
                         })}
                     </div>
-                    <div className="algo-details bg-[#3c3c3b] p-2 rounded-lg text-white flex flex-col shadow-md">
-                        <h2 className="text-xl font-bold my-2">Pseudocode:</h2>
-                        <pre className="bg-[#282828] p-2 rounded-lg overflow-auto">
-                            {algoDetails.map((algorithm) => {
-                                if (algorithm.algo === sortingAlgo) {
-                                    return (
-                                        <div key={algorithm.id}>
-                                            {algorithm.sudo_code}
-                                        </div>
-                                    );
-                                }
-                            })}
-                        </pre>
-                        <h2 className="text-xl font-bold my-2">
-                            Video Reference:
-                        </h2>
-                        <pre className="bg-[#282828] p-2 rounded-lg overflow-auto">
-                            {algoDetails.map((algorithm) => {
-                                if (algorithm.algo === sortingAlgo) {
-                                    return (
-                                        <div key={algorithm.id}>
-                                            <a
-                                                href={algorithm.reference}
-                                                target="_blank"
-                                                className="hover:text-blue-400"
-                                            >
-                                                {algorithm.reference}
-                                            </a>
-                                        </div>
-                                    );
-                                }
-                            })}
-                        </pre>
+                    <div className="algo-details bg-[#3c3c3b] p-4 rounded-lg text-white flex flex-col shadow-md">
+                        <details>
+                            <summary className="text-xl font-bold cursor-pointer">
+                                More details
+                            </summary>
+                            <h2 className="text-xl font-bold my-2">
+                                Pseudocode:
+                            </h2>
+                            <pre className="bg-[#282828] p-4 rounded-lg overflow-auto">
+                                {algoDetails.map((algorithm) => {
+                                    if (algorithm.algo === sortingAlgo) {
+                                        return (
+                                            <div key={algorithm.id}>
+                                                {algorithm.sudo_code}
+                                            </div>
+                                        );
+                                    }
+                                })}
+                            </pre>
+                            <h2 className="text-xl font-bold my-2">
+                                Video Reference:
+                            </h2>
+                            <pre className="bg-[#282828] p-4 rounded-lg overflow-auto">
+                                {algoDetails.map((algorithm) => {
+                                    if (algorithm.algo === sortingAlgo) {
+                                        return (
+                                            <div key={algorithm.id}>
+                                                <a
+                                                    href={algorithm.reference}
+                                                    target="_blank"
+                                                    className="hover:text-blue-400"
+                                                >
+                                                    {algorithm.reference}
+                                                </a>
+                                            </div>
+                                        );
+                                    }
+                                })}
+                            </pre>
+                        </details>
                     </div>
                 </div>
-                <div className="graph w-full flex gap-2 p-2 bg-gray-400 rounded-xl flex-col flex-1 shadow-lg lg:max-w-3/4">
-                    <div className="graph bg-[#3c3c3b] p-2 rounded-lg text-white flex flex-1 shadow-md">
+
+                {/* Graph Section */}
+                <div className="graph w-full flex gap-4 p-4 bg-gray-500 rounded-xl flex-col flex-1 shadow-lg lg:max-w-[50%]">
+                    <div className="graph bg-[#3c3c3b] p-4 rounded-lg text-white flex flex-1 shadow-md">
                         {data.map((value, index) => {
                             const maxValue = Math.max(...data);
                             const heightPercentage = (value / maxValue) * 100;
@@ -488,17 +534,9 @@ const AlgoVisualizer = () => {
                             );
                         })}
                     </div>
-                    <div className="controls bg-[#3c3c3b] p-2 rounded-lg text-white flex justify-center shadow-md gap-2">
+                    <div className="controls bg-[#3c3c3b] p-4 rounded-lg text-white flex justify-center shadow-md gap-4">
                         <button
-                            className="bg-blue-500 p-2 rounded-md hover:bg-blue-600 transition-all duration-100 cursor-pointer active:bg-blue-500"
-                            onClick={() => {
-                                getValues();
-                            }}
-                        >
-                            Generate New Array
-                        </button>
-                        <button
-                            className="bg-blue-500 p-2 rounded-md hover:bg-blue-600 transition-all duration-100 cursor-pointer active:bg-blue-500"
+                            className="bg-blue-600 p-2 rounded-md hover:bg-blue-700 transition-all duration-200 cursor-pointer active:bg-blue-600"
                             onClick={() => {
                                 handleSort();
                             }}

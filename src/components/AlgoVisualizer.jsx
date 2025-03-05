@@ -16,7 +16,7 @@ const AlgoVisualizer = () => {
     );
     const [currentIndices, setCurrentIndices] = useState([]);
     const [arraySize, setArraySize] = useState(
-        parseInt(localStorage.getItem("arraySize")) || 28
+        parseInt(localStorage.getItem("arraySize")) || 25
     );
     const [mute, setMute] = useState(
         localStorage.getItem("mute") === "true" || false

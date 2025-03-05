@@ -12,7 +12,7 @@ const AlgoVisualizer = () => {
         localStorage.getItem("sortingAlgo") || "merge"
     );
     const [speedValue, setSpeedValue] = useState(
-        parseFloat(localStorage.getItem("speedValue")) || 5
+        parseFloat(localStorage.getItem("speedValue")) || 6.5
     );
     const [currentIndices, setCurrentIndices] = useState([]);
     const [arraySize, setArraySize] = useState(
@@ -22,7 +22,7 @@ const AlgoVisualizer = () => {
         localStorage.getItem("mute") === "true" || false
     );
     const [audio, setAudio] = useState(
-        parseFloat(localStorage.getItem("audio")) || 0.2
+        parseFloat(localStorage.getItem("audio")) || 0.15
     );
     const [working, setWorking] = useState(false);
     const [stopSorting, setStopSorting] = useState(false);

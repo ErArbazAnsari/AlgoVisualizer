@@ -12,7 +12,7 @@ const AlgoVisualizer = () => {
         localStorage.getItem("sortingAlgo") || "merge"
     );
     const [speedValue, setSpeedValue] = useState(
-        parseFloat(localStorage.getItem("speedValue")) || 6
+        parseFloat(localStorage.getItem("speedValue")) || 5
     );
     const [currentIndices, setCurrentIndices] = useState([]);
     const [arraySize, setArraySize] = useState(

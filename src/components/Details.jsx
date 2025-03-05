@@ -53,6 +53,8 @@ const Details = ({
                             }
                             type="number"
                             name="arraySize"
+                            max="99"
+                            min="0"
                             id="arraySize"
                             className="w-16 bg-white p-2 rounded-md text-black"
                         />

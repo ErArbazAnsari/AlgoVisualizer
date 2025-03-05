@@ -22,7 +22,7 @@ const AlgoVisualizer = () => {
         localStorage.getItem("mute") === "true" || false
     );
     const [audio, setAudio] = useState(
-        parseFloat(localStorage.getItem("audio")) || 0.15
+        parseFloat(localStorage.getItem("audio")) || 0.05
     );
     const [working, setWorking] = useState(false);
     const [stopSorting, setStopSorting] = useState(false);

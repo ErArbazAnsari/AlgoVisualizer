@@ -7,7 +7,7 @@ const Graph = ({ data, currentIndices, sortingAlgo }) => {
                 {sortingAlgo.charAt(0).toUpperCase() + sortingAlgo.slice(1)}{" "}
                 Sort
             </p>
-            <div className="graph p-4 rounded-lg text-white flex justify-center items-end shadow-md min-h-64 sm:min-h-96 w-full lg:w-[100%] flex-1/2">
+            <div className="graph p-4 rounded-lg text-white flex justify-center items-end shadow-md min-h-64 sm:min-h-96 w-full lg:w-[100%] flex-1/2 scroll-auto">
                 {data.map((value, index) => {
                     const maxValue = Math.max(...data);
                     const heightPercentage = (value / maxValue) * 100;

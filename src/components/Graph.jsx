@@ -7,7 +7,7 @@ const Graph = ({ data, currentIndices, sortingAlgo }) => {
                 {sortingAlgo.charAt(0).toUpperCase() + sortingAlgo.slice(1)}{" "}
                 Sort
             </p>
-            <div className="graph p-4 rounded-lg text-white flex justify-center items-end shadow-md min-h-64 sm:min-h-96 w-full lg:w-[100%] flex-1/2 scroll-auto">
+            <div className="graph p-4 rounded-lg text-white flex justify-center items-end shadow-md min-h-48 sm:min-h-64 md:min-h-96 w-full lg:w-[100%] flex-1/2 scroll-auto">
                 {data.map((value, index) => {
                     const maxValue = Math.max(...data);
                     const heightPercentage = (value / maxValue) * 100;
@@ -17,22 +17,22 @@ const Graph = ({ data, currentIndices, sortingAlgo }) => {
                             key={index}
                             style={{
                                 height: `${heightPercentage}%`,
-                                width: "3%",
+                                width: "clamp(2%, 3%, 4%)", // Responsive width
                                 margin: "0 0.5%",
                                 backgroundColor: isCurrent
-                                    ? "#FF6347" // Tomato color for current
-                                    : "#4682B4", // Steel blue for others
+                                    ? "#FF4500" // OrangeRed color for current
+                                    : "#1E90FF", // DodgerBlue for others
                                 borderRadius: "10px 10px 0 0",
                                 transition:
                                     "height 0.5s ease-in-out, background-color 0.5s ease-in-out, transform 0.5s ease-in-out",
                                 transform: isCurrent
-                                    ? "scale(1.05)"
+                                    ? "scale(1.1)"
                                     : "scale(1)",
                                 boxShadow: isCurrent
-                                    ? "0 0 15px 3px rgba(255, 99, 71, 0.7)" // Tomato shadow for current
-                                    : "0 0 5px 2px rgba(70, 130, 180, 0.5)", // Steel blue shadow for others
+                                    ? "0 0 20px 5px rgba(255, 69, 0, 0.7)" // OrangeRed shadow for current
+                                    : "0 0 10px 3px rgba(30, 144, 255, 0.5)", // DodgerBlue shadow for others
                             }}
-                            className="flex justify-center items-end relative"
+                            className="flex justify-center items-end relative "
                             aria-label={`Bar ${index + 1} with value ${value}`}
                         >
                             <span
@@ -41,7 +41,7 @@ const Graph = ({ data, currentIndices, sortingAlgo }) => {
                                     top: "-20px",
                                     color: "#fff",
                                     fontWeight: "bold",
-                                    fontSize: "0.8rem",
+                                    fontSize: "clamp(0.6rem, 2vw, 0.8rem)", // Responsive font size
                                     textShadow:
                                         "1px 1px 2px rgba(0, 0, 0, 0.5)",
                                 }}

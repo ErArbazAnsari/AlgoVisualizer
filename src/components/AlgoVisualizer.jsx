@@ -70,7 +70,7 @@ const AlgoVisualizer = () => {
     };
 
     return (
-        <div className="flex gap-4 p-4 min-h-screen">
+        <div className="flex gap-4 p-4 min-h-screen flex-col lg:flex-row">
             <Details
                 sortingAlgo={sortingAlgo}
                 setSortingAlgo={setSortingAlgo}
